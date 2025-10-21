@@ -20,6 +20,7 @@ const Input = ({
   onKeyDown,
   showError,
   onBlur,
+  required,
 }) => {
   const { error, validate } = useInputValidate(showError);
 
@@ -35,15 +36,15 @@ const Input = ({
   };
 
   return (
-    <div className="mb-[1.5rem]">
+    <div className="mb-[1rem]">
       {label && (
         <label
           htmlFor={id}
           className={`
             ${disabled ? "bg-none" : "bg-white"}
-            text-black mb-2 font-aileron_r pt-2 cursor-text ${variant}`}
+            mb-2 text-brand_secondary font-albra_sans_sb text-14 pt-2 cursor-text ${variant}`}
         >
-          {label}
+          {label} {required && <span className="text-error">*</span>}
         </label>
       )}
       <input
