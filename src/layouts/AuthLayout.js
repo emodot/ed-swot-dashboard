@@ -1,9 +1,14 @@
 import SignUpImg from "assets/images/signup-img.jpg";
+import LoginImg from "assets/images/login-img.jpg";
+import ForgotPasswordImg from "assets/images/forgot-password-img.jpg";
+import ResetPasswordImg from "assets/images/reset-password-img.jpg";
+import ResetPasswordSuccessImg from "assets/images/reset-password-success-img.jpg";
+import EmailVerification from "assets/images/email-verification-img.jpg";
+import EmailVerified from "assets/images/email-verified-img.jpg";
 import Spinner from "../components/Spinner";
 import {
   createContext,
   Suspense,
-  useCallback,
   useContext,
   useEffect,
   useState,
@@ -22,18 +27,28 @@ export default function MainLayout() {
   const { search, pathname } = useLocation();
   const queryParams = new URLSearchParams(search);
   const step = queryParams.get("step") || "";
-  console.log("pathname", pathname);
+  const status = queryParams.get("status") || "";
+  console.log("step", step);
 
-  // const closeLeftSide = pathname.toLowerCase().includes("membership-plans");
-    const closeLeftSide = useCallback(
-      () => {
-        return (
-          pathname.toLowerCase().includes("membership-plans") ||
-          pathname.toLowerCase().includes("multi-learner-setup")
-        );
-      },
-      [pathname]
-    );
+  const closeLeftSide = 
+    pathname.toLowerCase().includes("membership-plans") ||
+    pathname.toLowerCase().includes("multi-learner-setup");
+
+  const leftBG =
+    step === "email-verification"
+      ? EmailVerification
+      : step === "email-verified"
+      ? EmailVerified
+      : pathname.toLowerCase().includes("login")
+      ? LoginImg
+      : pathname.toLowerCase().includes("forgot-password")
+      ? ForgotPasswordImg
+      : pathname.toLowerCase().includes("reset-password") &&
+        status === ""
+      ? ResetPasswordImg
+      : status === "reset-successful"
+      ? ResetPasswordSuccessImg
+      : SignUpImg;
 
 
   const toggleMenu = () => {
@@ -89,7 +104,7 @@ export default function MainLayout() {
                 <div
                   className="w-full h-full"
                   style={{
-                    backgroundImage: `url(${SignUpImg})`,
+                    backgroundImage: `url(${leftBG})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",

@@ -9,7 +9,7 @@ const EmailVerified = ({ email }) => {
     <div className="md:w-[85%] w-[90%] m-auto mt-[4rem] flex flex-col items-center">
       <img src={Logo} alt="logo" className="w-[4rem]" />
       <div className="pt-8 w-full">
-        <h2 className="text-[34px] font-albra_sans_b text-center text-brand_secondary mb-2">
+        <h2 className="text-[34px] font-albra_sans_sb text-center text-brand_secondary mb-2">
           Email Address Verified 🥳
         </h2>
         <p className="text-14 text-border_stroke_2 text-center mb-6 font-aileron_r">

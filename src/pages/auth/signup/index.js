@@ -10,7 +10,7 @@ import EmailVerified from "components/Signup/EmailVerified";
 import PasswordInput from "components/Inputs/PasswordInput";
 import Input from "components/Inputs/Input";
 
-const Home = () => {
+const SignUp = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -32,7 +32,6 @@ const Home = () => {
       setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    // Validation function to check form fields and show toast messages
     const validateForm = () => {
       if (!formData.firstName.trim()) {
         toast.error("Please enter your first name");
@@ -92,7 +91,7 @@ const Home = () => {
         <div className="md:w-[85%] w-[90%] m-auto mt-[4rem]">
           <img src={Logo} alt="logo" className="w-[4rem]" />
           <div className="pt-8">
-            <h2 className="text-[34px] font-albra_sans_b text-brand_secondary mb-2">
+            <h2 className="text-[34px] font-albra_sans_sb text-brand_secondary mb-2">
               Sign Up
             </h2>
             <p className="text-14 text-border_stroke_2 mb-6 font-aileron_r">
@@ -192,9 +191,7 @@ const Home = () => {
                       toast.error("Please enter a correct confim password");
                       return;
                     }
-                    toast.success(
-                      "Account Created Successfully"
-                    );
+                    toast.success("Account Created Successfully");
                     navigate("membership-plans");
                   }}
                 >
@@ -250,7 +247,12 @@ const Home = () => {
               </p>
               <p className="text-neutral_black text-14 font-aileron_r mt-[12px]">
                 Already have an account?{" "}
-                <span className="font-aileron_sb text-14 cursor-pointer hover:underline">
+                <span
+                  className="font-aileron_sb text-14 cursor-pointer hover:underline"
+                  onClick={() => {
+                    navigate("/auth/login");
+                  }}
+                >
                   Log in
                 </span>
               </p>
@@ -264,4 +266,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default SignUp;

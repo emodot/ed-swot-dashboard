@@ -69,7 +69,7 @@ const PasswordInput = ({
           className={`${variant} 
               ${inputError ? "border-error" : "border-neutral_stroke_1"} 
               h-[50px] px-4 pr-12 mt-2 text-brand_secondary text-[16px] sm:text-14 w-full outline-0 border font-aileron_r hide_tap
-              rounded-[10px] focus:border-brand_secondary focus:border
+              rounded-[10px] focus:outline-none focus:ring-2 focus:ring-brand_primary
               ${
                 disabled
                   ? "bg-neutral_disabled border-neutral_stroke_2"
