@@ -187,7 +187,7 @@ export default function MembershipPlans() {
             navigate("/auth/multi-learner-setup");
           }}
         >
-          Sign Up
+          Continue
         </button>
       </div>
     </section>
