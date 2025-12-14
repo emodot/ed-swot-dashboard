@@ -1,39 +1,58 @@
 import React from "react";
-import {
-  Home,
-  BookOpen,
-  Calendar,
-  FileText,
-  Settings,
-  LogOut,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { Calendar } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import clsx from "clsx";
 import Logo from "assets/images/logo-main.webp";
+import { useRole } from "contexts/RoleContext";
 import {
   HomeIcon,
   CourseIcon,
   TutorsIcon,
   ReceiptsIcon,
   SettingsIcon,
-  LogoutIcon
+  LogoutIcon,
+  StudentsIcon,
 } from "constants/sidebar_icons";
 
-const menuItems = [
-  { icon: <HomeIcon size={24} />, label: "Home" },
-  { icon: <CourseIcon size={24} />, label: "My Courses" },
-  { icon: <TutorsIcon size={24} />, label: "My Tutors" },
-  { icon: <Calendar size={18} />, label: "My Calendar" },
-  { icon: <ReceiptsIcon size={20} />, label: "My Receipts" },
-];
-
-const bottomItems = [
-  { icon: <SettingsIcon size={22} />, label: "My Settings" },
-  { icon: <LogoutIcon size={22} />, label: "Log Out" },
-];
-
 const Sidebar = ({ isOpen, toggle }) => {
+  const { role } = useRole();
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  // Student menu items
+  const studentMenuItems = [
+    { icon: <HomeIcon size={24} />, label: "Home", path: "/dashboard" },
+    { icon: <CourseIcon size={24} />, label: "My Courses", path: "/my-courses" },
+    { icon: <TutorsIcon size={24} />, label: "My Tutors", path: "/my-tutors" },
+    { icon: <Calendar size={18} />, label: "My Calendar", path: "/my-calendar" },
+    { icon: <ReceiptsIcon size={20} />, label: "My Receipts", path: "/my-receipts" },
+  ];
+
+  // Tutor menu items
+  const tutorMenuItems = [
+    { icon: <HomeIcon size={24} />, label: "Home", path: "/tutor/dashboard" },
+    { icon: <CourseIcon size={24} />, label: "My Courses", path: "/tutor/my-courses" },
+    { icon: <StudentsIcon size={24} />, label: "My Students", path: "/tutor/my-students" },
+    { icon: <Calendar size={18} />, label: "My Calendar", path: "/tutor/my-calendar" },
+  ];
+
+  const menuItems = role === "tutor" ? tutorMenuItems : studentMenuItems;
+
+  const bottomItems = [
+    { icon: <SettingsIcon size={22} />, label: "My Settings", path: role === "tutor" ? "/tutor/settings" : "/settings" },
+    { icon: <LogoutIcon size={22} />, label: "Log Out", path: "/auth/login" },
+  ];
+
+  const isActive = (path) => {
+    if (path === "/dashboard" || path === "/tutor/dashboard") {
+      return currentPath === "/" || currentPath === "/dashboard" || currentPath === "/tutor/dashboard";
+    }
+    if (path === "/settings" || path === "/tutor/settings") {
+      return currentPath.startsWith("/settings") || currentPath.startsWith("/tutor/settings");
+    }
+    return currentPath === path || currentPath.startsWith(path + "/");
+  };
+
   return (
     <>
       {/* Overlay for Mobile */}
@@ -48,13 +67,15 @@ const Sidebar = ({ isOpen, toggle }) => {
       <aside
         className={clsx(
           "fixed md:static z-30 flex flex-col justify-between bg-white border-r border-neutral_stroke_2 h-full transition-all duration-300 ease-in-out",
-          isOpen ? "w-[20%] min-w-[15rem]" : "w-[5.5rem]"
+          isOpen ? "w-[15%] min-w-[15rem]" : "w-[5.5rem]"
         )}
       >
         {/* Top */}
         <div>
           <div className="flex items-center justify-between p-4 relative h-[90px]">
-            <img src={Logo} alt="logo" className="w-[3rem]" />
+            <Link to={role === "tutor" ? "/tutor/dashboard" : "/dashboard"}>
+              <img src={Logo} alt="logo" className="w-[3rem]" />
+            </Link>
             <button
               onClick={toggle}
               className="hidden md:flex items-center justify-center bg-light_brand_primary rounded-md p-1 text-brand_secondary absolute right-[-24px] bottom-[10px]"
@@ -85,57 +106,69 @@ const Sidebar = ({ isOpen, toggle }) => {
           {/* Menu */}
           <nav className="mt-6">
             <ul className="space-y-5 px-[1rem]">
-              {menuItems.map((item, index) => (
-                <li
-                  key={index}
-                  className={clsx(
-                    "flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-light_brand_primary rounded-lg",
-                    item.label === "Home" && "bg-brand_primary"
-                  )}
-                >
-                  <span className="text-brand_secondary basis-[10%] flex justify-center items-center">
-                    {item.icon}
-                  </span>
-                  {isOpen && (
-                    <span
-                      className={`font-aileron_r text-14 text-brand_secondary ${
-                        item.label === "Home" && "font-aileron_sb"
-                      }`}
+              {menuItems.map((item, index) => {
+                const active = isActive(item.path);
+                return (
+                  <li key={index}>
+                    <Link
+                      to={item.path}
+                      className={clsx(
+                        "flex items-center gap-3 px-4 py-3 hover:bg-light_brand_primary rounded-lg transition-colors",
+                        active && "bg-brand_primary"
+                      )}
                     >
-                      {item.label}
-                    </span>
-                  )}
-                </li>
-              ))}
+                      <span className="text-brand_secondary basis-[10%] flex justify-center items-center">
+                        {item.icon}
+                      </span>
+                      {isOpen && (
+                        <span
+                          className={clsx(
+                            "font-aileron_r text-14 text-brand_secondary",
+                            active && "font-aileron_sb"
+                          )}
+                        >
+                          {item.label}
+                        </span>
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
         </div>
 
         {/* Bottom */}
         <div className="mb-4">
-          <ul className="space-y-1  px-[1rem]">
-            {bottomItems.map((item, index) => (
-              <li
-                key={index}
-                className={clsx(
-                  "flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-light_brand_primary rounded-lg",
-                  item.label === "Home" && "bg-brand_primary"
-                )}
-              >
-                <span className="text-brand_secondary basis-[10%] flex justify-center items-center">
-                  {item.icon}
-                </span>
-                {isOpen && (
-                  <span
-                    className={`font-aileron_r text-14 text-brand_secondary ${
-                      item.label === "Home" && "font-aileron_sb"
-                    }`}
+          <ul className="space-y-1 px-[1rem]">
+            {bottomItems.map((item, index) => {
+              const active = isActive(item.path);
+              return (
+                <li key={index}>
+                  <Link
+                    to={item.path}
+                    className={clsx(
+                      "flex items-center gap-3 px-4 py-3 hover:bg-light_brand_primary rounded-lg transition-colors",
+                      active && "bg-brand_primary"
+                    )}
                   >
-                    {item.label}
-                  </span>
-                )}
-              </li>
-            ))}
+                    <span className="text-brand_secondary basis-[10%] flex justify-center items-center">
+                      {item.icon}
+                    </span>
+                    {isOpen && (
+                      <span
+                        className={clsx(
+                          "font-aileron_r text-14 text-brand_secondary",
+                          active && "font-aileron_sb"
+                        )}
+                      >
+                        {item.label}
+                      </span>
+                    )}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </aside>

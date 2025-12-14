@@ -113,7 +113,7 @@ export default function MultiLearnerSetup() {
             </div>
           </div>
           <div className="mt-[48px] flex gap-[16px] w-full justify-center">
-            <button className="px-[24px] py-[10px] border border-border_stroke_2 rounded-[8px] text-14 font-aileron_sb text-brand_secondary hover:bg-neutral_disabled transition">
+            <button className="px-[24px] py-[10px] border border-border_stroke_2 rounded-[8px] text-14 font-aileron_sb text-brand_secondary hover:bg-neutral_disabled transition" onClick={() => navigate("/dashboard")}>
               Go To Dashboard
             </button>
             <button

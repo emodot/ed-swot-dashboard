@@ -14,7 +14,6 @@ import { Outlet } from "react-router-dom";
 // import { motion, AnimatePresence } from "framer-motion";
 import Sidebar from "components/Sidebar";
 
-
 const ModalContext = createContext();
 
 export const useModal = () => useContext(ModalContext);
@@ -40,7 +39,7 @@ export default function MainLayout() {
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [ isMenuOpen]);
+  }, [isMenuOpen]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -65,9 +64,12 @@ export default function MainLayout() {
               toggle={() => setIsSidebarOpen(!isSidebarOpen)}
             />
 
-            <div className="min-w-[80%]">
+            <div className="min-w-[80%] w-full">
               <Header toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
-              <main className="flex-1 h-full w-full overflow-y-auto p-4 md:p-6 mb-[7rem] bg-white">
+              <main
+                className="flex-1 w-full overflow-y-auto p-4 md:p-6 mb-[7rem] bg-white"
+                style={{ height: "calc(100vh - 90px)" }}
+              >
                 <Outlet />
               </main>
             </div>

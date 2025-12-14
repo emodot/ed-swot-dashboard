@@ -11,6 +11,7 @@ const CourseCard = ({
   desc,
   tutorRole,
   tutorImg,
+  onViewDetails,
 }) => {
   return (
     <>
@@ -65,7 +66,10 @@ const CourseCard = ({
             <button className="flex-1 bg-brand_primary text-brand_secondary font-aileron_r text-14 py-2 rounded-md">
               Join Now
             </button>
-            <button className="flex-1 text-brand_secondary font-aileron_r text-14 py-2 rounded-md">
+            <button
+              onClick={onViewDetails}
+              className="flex-1 text-brand_secondary font-aileron_r text-14 py-2 rounded-md hover:bg-neutral_disabled transition-colors"
+            >
               View Details
             </button>
           </div>

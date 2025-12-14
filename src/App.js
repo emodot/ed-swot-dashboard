@@ -1,11 +1,12 @@
 import { RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { router } from "./router";
+import { RoleProvider } from "./contexts/RoleContext";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
-    <div className="">
+    <RoleProvider>
       <RouterProvider router={router} />
       <ToastContainer
         position="top-right"
@@ -19,7 +20,7 @@ function App() {
         pauseOnHover
         theme="light"
       />
-    </div>
+    </RoleProvider>
   );
 }
 

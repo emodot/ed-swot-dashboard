@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { ReactComponent as CourseIcon } from "assets/icons/course-icon.svg";
 
 const InprogressCourseCard = ({
@@ -8,7 +9,16 @@ const InprogressCourseCard = ({
   image,
   category,
   tutorImg,
+  courseId,
+  lessonId,
 }) => {
+  const navigate = useNavigate();
+
+  const handleContinue = () => {
+    // Navigate to course lesson page
+    const courseSlug = title.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/course/${courseSlug}/lesson/1`);
+  };
   return (
     <>
       <div className="max-w-[26rem] group rounded-[12px] border border-neutral_stroke_2 overflow-hidden shadow-md bg-white p-2">
@@ -60,7 +70,10 @@ const InprogressCourseCard = ({
                 </p>
               </div>
             </div>
-            <button className="px-4 bg-brand_primary text-brand_secondary font-aileron_r text-14 py-2 rounded-md">
+            <button
+              onClick={handleContinue}
+              className="px-4 bg-brand_primary text-brand_secondary font-aileron_r text-14 py-2 rounded-md hover:opacity-90 transition-opacity"
+            >
               Continue
             </button>
           </div>
